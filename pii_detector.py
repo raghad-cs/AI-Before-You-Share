@@ -19,26 +19,26 @@ pii_detector = pipeline(
 
 
 def refine_pii_type(text, model_type):
-    """
-    Refine the model prediction using structured validation rules.
-    """
+
     if validate_email(text):
-        return "PRIVATE_EMAIL"
+        return "private_email"
 
     if validate_saudi_iban(text):
-        return "SAUDI_IBAN"
+        return "saudi_iban"
 
     if validate_saudi_phone(text):
-        return "PRIVATE_PHONE"
+        return "private_phone"
 
     if validate_credit_card(text):
-        return "CREDIT_CARD"
+        return "credit_card"
 
     if validate_saudi_national_id(text):
-        return "SAUDI_NATIONAL_ID"
+        return "saudi_national_id"
 
     if validate_saudi_iqama(text):
-        return "SAUDI_IQAMA"
+        return "saudi_iqama"
+
+    return model_type.lower()
 
     # If no structured rule matches,
     # keep the original model prediction

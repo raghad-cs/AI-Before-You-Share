@@ -22,7 +22,19 @@ def merge_email_fragments(ocr_results):
                     + ".com"
                 )
 
-                current["box"] = current["box"] + next_item["box"]
+                all_points = current["box"] + next_item["box"]
+
+                min_x = min(point[0] for point in all_points)
+                max_x = max(point[0] for point in all_points)
+                min_y = min(point[1] for point in all_points)
+                max_y = max(point[1] for point in all_points)
+
+                current["box"] = [
+                    [min_x, min_y],
+                    [max_x, min_y],
+                    [max_x, max_y],
+                    [min_x, max_y]
+                ]
 
                 merged.append(current)
 
@@ -58,6 +70,7 @@ def analyze_image(image_path):
         for pii_item in pii_results:
 
             final_results.append({
+                "ocr_text": extracted_text,
                 "text": pii_item["text"],
                 "model_type": pii_item["model_type"],
                 "final_type": pii_item["final_type"],
