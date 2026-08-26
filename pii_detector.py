@@ -6,6 +6,7 @@ from validators import (
     validate_credit_card,
     validate_saudi_national_id,
     validate_saudi_iqama,
+    validate_email,
 )
 
 
@@ -21,6 +22,8 @@ def refine_pii_type(text, model_type):
     """
     Refine the model prediction using structured validation rules.
     """
+    if validate_email(text):
+        return "PRIVATE_EMAIL"
 
     if validate_saudi_iban(text):
         return "SAUDI_IBAN"

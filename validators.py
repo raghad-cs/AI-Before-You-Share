@@ -102,6 +102,15 @@ def validate_saudi_iqama(value):
         and number.startswith("2")
     )
 
+# -----------------------------
+# Email
+# -----------------------------
+def validate_email(value):
+    value = value.strip()
+
+    pattern = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
+
+    return bool(re.fullmatch(pattern, value))
 
 # -----------------------------
 # Test
@@ -128,4 +137,9 @@ if __name__ == "__main__":
     print(
         "Iqama:",
         validate_saudi_iqama("2123456789")
+    )
+
+    print(
+    "Email:",
+    validate_email("raghad@example.com")
     )
