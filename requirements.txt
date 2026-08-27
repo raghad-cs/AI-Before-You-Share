@@ -1,3 +1,4 @@
 easyocr
 pillow
 numpy
+transformers
