@@ -1,4 +1,5 @@
 import json
+import re
 import easyocr
 import numpy as np
 
@@ -9,6 +10,14 @@ from PIL import Image
 # Create the OCR reader once
 reader = easyocr.Reader(["ar", "en"], gpu=False)
 
+def normalize_iban_ocr(text):
+    # Fix OCR reading Saudi IBAN prefix SA as A$
+    text = re.sub(
+        r"(?i)(?<![A-Z0-9])(?:A\$|\$A)(?=\s*(?:\d[\s-]*){22}(?!\d))",
+        "SA",
+        text
+    )
+    return text
 
 def run_ocr(image_path):
     """
@@ -30,6 +39,7 @@ def run_ocr(image_path):
     detections = []
 
     for box, text, confidence in results:
+        normalized_text = normalize_iban_ocr(text)
 
         # Convert NumPy numbers to normal Python integers
         clean_box = [
@@ -38,7 +48,7 @@ def run_ocr(image_path):
         ]
 
         detections.append({
-            "text": text,
+            "text": normalized_text,
             "confidence": round(float(confidence), 3),
             "box": clean_box
         })
