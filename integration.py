@@ -2,6 +2,7 @@ from pathlib import Path
 
 from ocr import run_ocr
 from pii_detector import detect_pii
+from risk_score import add_risk_score, calculate_overall_risk
 
 def merge_email_fragments(ocr_results):
     merged = []
@@ -83,6 +84,10 @@ def analyze_image(image_path):
                 "start": pii_item["start"],
                 "end": pii_item["end"]
             })
+    
+    # Step 4: Add risk score to each detected PII
+    for item in final_results:
+        add_risk_score(item)        
 
     return final_results
 
@@ -99,3 +104,5 @@ if __name__ == "__main__":
 
     for item in results:
         print(item)
+    overall_risk = calculate_overall_risk(results)
+    print("OVERALL RISK:", overall_risk)
