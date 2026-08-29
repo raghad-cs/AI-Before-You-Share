@@ -1,3 +1,5 @@
 easyocr
 pillow
 numpy
+transformers
+streamlit
