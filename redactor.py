@@ -158,33 +158,29 @@ def apply_redaction(image, sensitive_box, mode="black"):
 def redact_image(
     image_path,
     output_path="safe_to_share.jpg",
-    mode="black"
+    mode="black",
+    detections=None
 ):
     """
     Detect PII in the image and redact
     only the sensitive regions.
     """
 
-    image = cv2.imread(
-        str(image_path)
-    )
+    image = cv2.imread(str(image_path))
 
     if image is None:
         raise FileNotFoundError(
             f"Image not found: {image_path}"
         )
 
-    # Get OCR + PII + validation results
-    detections = analyze_image(
-        image_path
-    )
+    # Use existing detections if provided,
+    # otherwise run the pipeline
+    if detections is None:
+        detections = analyze_image(image_path)
 
     # Redact every detected PII
     for detection in detections:
-
-        sensitive_box = get_sensitive_box(
-            detection
-        )
+        sensitive_box = get_sensitive_box(detection)
 
         image = apply_redaction(
             image,
@@ -192,10 +188,7 @@ def redact_image(
             mode
         )
 
-    cv2.imwrite(
-        output_path,
-        image
-    )
+    cv2.imwrite(output_path, image)
 
     return output_path
 
