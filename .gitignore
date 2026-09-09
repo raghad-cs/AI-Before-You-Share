@@ -216,3 +216,12 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Project local test outputs
+safe_to_share_black.jpg
+safe_to_share_blur.jpg
+test_images/Raghad_try.png
+test_images/arabic_top_english_bottom.png
+test_images/screenshot_test.png
+
+test_images/
